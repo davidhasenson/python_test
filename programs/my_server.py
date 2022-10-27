@@ -46,7 +46,7 @@ def main():
                         f"Command received: {command}, Message received: {message} ")
                     ret_data = message
 
-                    for i in range(len(command)):
+                    for i in command:
                         if i == "u":
                             ret_data = return_upper(ret_data)
                         elif i == "r":
@@ -55,8 +55,7 @@ def main():
                             ret_data = return_multiplied(ret_data, i)
                         else:
                             print("No command given. ")
-
-                conn.sendall(ret_data.encode())
+                    conn.sendall(ret_data.encode())
 
 
 if __name__ == "__main__":

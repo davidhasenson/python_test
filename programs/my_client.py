@@ -1,21 +1,25 @@
 # Echo client program from https://docs.python.org/3/library/socket.html#example
 
-from email import message
 import socket
+
 
 HOST = 'localhost'    # The remote host
 PORT = 50007              # The same port as used by the server
 
 
 def send_message():
-    send_msg = str(input("E1nter input: ")).encode()
-    command = send_msg.decode()[0]
-    message = send_msg.decode()
+    command = input("Enter command: ").strip()
+    message = input("enter message: ").strip()
+    send_msg = command + " " + message
+
+    #send_msg = str(input("Enter input: ")).encode()
+    #command = send_msg.decode()[0]
+    #message = send_msg.decode()[1:]
     print(f"Command sent: {command} Message sent: {message}")
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
-        s.sendall(send_msg)
+        s.sendall(send_msg.encode())
         data = s.recv(1024).decode()
     print('Received', repr(data))
 

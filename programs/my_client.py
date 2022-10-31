@@ -7,7 +7,8 @@ HOST = 'localhost'    # The remote host
 PORT = 50007              # The same port as used by the server
 
 
-def send_message():
+def send_message(s):
+
     command = input("Enter command: ").strip()
     message = input("enter message: ").strip()
     send_msg = command + " " + message
@@ -16,11 +17,8 @@ def send_message():
     #command = send_msg.decode()[0]
     #message = send_msg.decode()[1:]
     print(f"Command sent: {command} Message sent: {message}")
-
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-        s.sendall(send_msg.encode())
-        data = s.recv(1024).decode()
+    s.sendall(send_msg.encode())
+    data = s.recv(1024).decode()
     print('Received', repr(data))
 
 
@@ -32,13 +30,19 @@ MENU_TEXT = """
 
 
 def main():
-    while True:
-        print(MENU_TEXT)
-        option = input("Enter option: ")
-        if option == "1":
-            send_message()
-        elif option == "2":
-            exit("Quitting")
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT))
+        print(f"Connegted to {s}")
+
+        while True:
+            print(MENU_TEXT)
+            option = input("Enter option: ")
+            if option == "1":
+                send_message(s)
+
+            elif option == "2":
+                s.close()
+                exit("Quitting")
 
 
 if __name__ == "__main__":

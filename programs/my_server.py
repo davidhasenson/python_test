@@ -2,6 +2,7 @@
 
 import socket
 from threading import Thread
+import threading
 
 
 def return_upper(message):
@@ -46,9 +47,10 @@ def modify_message(command, message):
 
 def thread_target(conn, addr):
     # while True:
+    print('New thread. Connected by', addr)
     with conn:
-        print('New thread. Connected by', addr)
         while True:
+            print('Connected by', addr)
             data = conn.recv(1024).decode()
             if not data:
                 break
@@ -73,6 +75,7 @@ def main():
                 conn, addr = s.accept()
                 Thread(target=thread_target, args=(conn, addr), daemon=True).start()
                 print("New thread started")
+                print(f"Thread enumerate: {threading.enumerate()}")
 
 
 if __name__ == "__main__":

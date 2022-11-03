@@ -79,19 +79,19 @@ def main():
     HOST = '127.0.0.1'
     PORT = 50007
     clients = []
-    while True:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            s.bind((HOST, PORT))
-            s.listen(1)
-            while True:
-                conn, addr = s.accept()
-                print("conn: ", conn)
-                print("addr : ", addr)
-                clients.append(conn)
-                Thread(target=thread_target, args=(conn, addr, clients), daemon=True).start()
-                print("New thread started")
-                print(f"Thread enumerate: {threading.enumerate()}")
+    # while True:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((HOST, PORT))
+        s.listen(1)
+        while True:
+            conn, addr = s.accept()
+            print("conn: ", conn)
+            print("addr : ", addr)
+            clients.append(conn)
+            Thread(target=thread_target, args=(conn, addr, clients), daemon=True).start()
+            print("New thread started")
+            print(f"Thread enumerate: {threading.enumerate()}")
 
 
 if __name__ == "__main__":
